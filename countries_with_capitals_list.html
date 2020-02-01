@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+<head>
+<title>List of Countries with Capital Cities</title>
+<script>
+var listOfCountriesWithCapitalCities = [];
+function addCapitalCityWithCountry(){
+	 var countryName = document.getElementById("country_input").value
+	 var capitalName = document.getElementById("capital_input").value
+	 if (countryName == "" && capitalName == ""){
+	 document.getElementById("message1").innerHTML = "Please, input a country name";
+	 document.getElementById("message2").innerHTML = "Please, input a capital city name";
+	 } else if(countryName == ""){
+	 document.getElementById("message1").innerHTML = "Please, input a country name";
+	 document.getElementById("message2").innerHTML = "";
+	 } else if (capitalName == ""){
+	 document.getElementById("message2").innerHTML = "Please, input a capital city name";
+	 document.getElementById("message1").innerHTML = "";
+	 }
+	 if(countryName != "" && capitalName != ""){
+	 document.getElementById("message1").innerHTML = "";
+	 document.getElementById("message2").innerHTML = "";
+	 localStorage.setItem(countryName, capitalName)
+	 //listOfCountriesWithCapitalCities[countryName] = capitalName;
+	 console.log(listOfCountriesWithCapitalCities);
+	 document.getElementById("country_input").value = "";
+	 document.getElementById("capital_input").value = "";
+	 successMessage(countryName, capitalName);
+	 }
+	 
+	 
+	 displayList();
+	 
+	 
+ }
+ function displayList(){
+ if(localStorage.length == 0){
+	document.getElementById("list_display").innerHTML = "<canvas id='emptyListMessage' width='500' height='50'>" + "</canvas>";
+	var canvas = document.getElementById("emptyListMessage");
+var ctx=canvas.getContext("2d");
+ctx.font="30px Comic Sans MS";
+ctx.fillStyle = "red";
+ctx.textAlign = "center";
+ctx.fillText("The list is empty", canvas.width/2, canvas.height/2);
+ } else {
+ var capitalCityList = "<table><tbody><tr><th>Countries</th><th>Capital Cities</th></tr></tr>";
+ for(let i=0; i<localStorage.length; i++) {
+  let key = localStorage.key(i);
+  capitalCityList += "<tr><td>" + key + "</td><td>" + localStorage.getItem(key) + "</td></tr>";
+}
+capitalCityList += "</tbody></table>";
+	 document.getElementById("list_display").innerHTML = capitalCityList;
+	 }
+	 
+	 document.getElementById('table').innerHTML = "";
+	 var table = document.getElementById('table');
+  var tableBody = document.createElement('tbody');
+  var tableRow = document.createElement('tr');
+  var tableData = document.createElement('td');
+  var tableData2 = document.createElement('td2');
+  var text = document.createTextNode("Countries");
+  tableData.appendChild(text);
+  var text2 = document.createTextNode("Capital Cities");
+  tableData2.appendChild(text2);
+        tableRow.appendChild(tableData);
+        tableRow.appendChild(tableData2);
+      tableBody.appendChild(tableRow);
+      table.appendChild(tableBody);
+	  for(let i=0; i<localStorage.length; i++) {
+  let key = localStorage.key(i);
+  var tableRow = document.createElement('tr');
+  var tableData = document.createElement('td');
+  var tableData2 = document.createElement('td2');
+  var text = document.createTextNode(key);
+  tableData.appendChild(text);
+  var text2 = document.createTextNode(localStorage.getItem(key));
+  tableData2.appendChild(text2);
+        tableRow.appendChild(tableData);
+        tableRow.appendChild(tableData2);
+      tableBody.appendChild(tableRow);
+}
+	  
+ }
+ function deleteItem(){
+ var countryName = document.getElementById("country_remove").value;
+ var key1 = "something1";
+ var foundItem = false;
+ for(let i=0; i<localStorage.length; i++) {
+	key1 = localStorage.key(i);
+	if(key1 == countryName){
+  foundItem = true;
+  }
+}
+ //var key1 = localStorage.getItem(countryName);
+ localStorage.removeItem(countryName);
+ displayList();
+ 
+ var key2 = "something2";
+ var length = localStorage.length;
+ var removed = false;
+ 
+ if(localStorage.length == 0){
+ removed = true;
+ }
+ 
+ for(let i=0; i<localStorage.length; i++) {
+	key2 = localStorage.key(i);
+	if(key2 != countryName && foundItem == true){
+  removed = true;
+  }
+}
+  
+if(removed){
+document.getElementById("country_remove").value = "";
+ var canvas = document.getElementById("newCapitalCity");
+var ctx=canvas.getContext("2d");
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+var newListItem = "Congratulations! You have successfully deleted the capital city of " + countryName;
+ctx.font="20px Comic Sans MS";
+ctx.fillStyle = "blue";
+ctx.textAlign = "center";
+ctx.fillText(newListItem, canvas.width/2, canvas.height/2);
+document.getElementById("message3").innerHTML = "";
+} else {
+document.getElementById("message3").innerHTML = "Sorry, this country has not been found in the list. Please, check the spelling and try again";
+var canvas = document.getElementById("newCapitalCity");
+var ctx=canvas.getContext("2d");
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+ }
+ function successMessage(countryName, capitalName){
+ var canvas = document.getElementById("newCapitalCity");
+var ctx=canvas.getContext("2d");
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+var newListItem = "Congratulations! You have successfully added " + capitalName + " which is a capital city of " + countryName;
+ctx.font="20px Comic Sans MS";
+ctx.fillStyle = "blue";
+ctx.textAlign = "center";
+ctx.fillText(newListItem, canvas.width/2, canvas.height/2);
+ }
+</script>
+
+<style>
+#flex{
+display:flex;
+flex-direction:row;
+}
+</style>
+</head>
+
+<body>
+<h1>Make a List of countries with their Capital Cities</h1>
+<div id="flex">
+<div>
+		Country:<input id=country_input></input><span id="message1" style="color:red;"></span><br><br>
+		Capital:<input id=capital_input></input><span id="message2" style="color:red;"></span><br><br>
+		<button onclick="addCapitalCityWithCountry()">Add Capital City with Country to the list</button><br><br>
+		Remove item:<input id=country_remove placeholder="Input the country name"></input><span id="message3" style="color:red;"></span><br><br>
+		<section>		
+			<!--<button onclick="displayList()">Display the List</button>-->
+			<button onclick="deleteItem()">Delete List Item</button><br><br>
+			<button onclick="displayList()">Display List</button><br><br>
+		</section>
+	<div id="list_display"><script>displayList()</script><!--<canvas id="emptyListMessage" width="500" height="50"></canvas>--></div>
+	<br>
+	<br>
+	<table id="table">
+</table>
+</div>
+
+<div>
+<canvas id="newCapitalCity" width="900" height="100"></canvas>
+</div>
+</div>
+	<br>
+	<br>
+	<h1>Video</h1>
+	<video width="320" height="240" controls>
+  <source src="P9162006.mp4" type="video/mp4">
+  <source src="movie.ogg" type="video/ogg">
+Your browser does not support the video tag.
+<br>
+	<br>
+	<h1>Audio</h1>
+<audio controls>
+  <source src="horse.ogg" type="audio/ogg">
+  <source src="horse.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+</body>
+</html>
