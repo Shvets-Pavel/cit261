@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+<title>Farm</title>
+<script>
+
+ 
+ function displayFarmInhabitants(){
+ if(localStorage.length == 0){
+	document.getElementById("farm_display").innerHTML = "<canvas id='emptyListMessage' width='500' height='50'>" + "</canvas>";
+	var canvas = document.getElementById("emptyListMessage");
+var ctx=canvas.getContext("2d");
+ctx.font="30px Comic Sans MS";
+ctx.fillStyle = "red";
+ctx.textAlign = "center";
+ctx.fillText("Now the farm is empty", canvas.width/2, canvas.height/2);
+ } else {
+ var farmInhabitants = "";
+ var object;
+ for(let i=0; i<localStorage.length; i++) {
+  let key = localStorage.key(i);
+  object = JSON.parse(localStorage.getItem(key));
+  console.log(object); 
+  object.showAnimal = function() {
+  return "Here is " + this.kind + " which makes the sound " + this.sound;
+};
+  //farmInhabitants += getObject.kind + " " + getObject.sound + "<br><br>";
+  farmInhabitants += object.showAnimal() + "<br><br>";
+}
+	 document.getElementById("farm_display").innerHTML = farmInhabitants;
+	 }
+}
+ 
+function buyAnimal(){
+
+var kind = document.getElementById("kind").value
+
+document.getElementById("message1").innerHTML = "";
+if(kind != "dog" && kind != "cat" && kind != "pig"){
+document.getElementById("message1").innerHTML = "There are no such animal at the market";
+}
+
+function Animal(kind){
+	this.kind = kind;	
+ }
+ 
+ 
+ 
+ function Dog(kind) {
+  Animal.call(this,kind); // call super constructor.
+}
+
+function Cat(kind) {
+  Animal.call(this,kind); // call super constructor.
+}
+
+function Pig(kind) {
+  Animal.call(this,kind); // call super constructor.
+}
+ var animal = "";
+ var number = 0;
+ 
+ switch (kind) {
+  case "cat":
+  Cat.prototype = Object.create(Animal.prototype);
+	var cat = new Cat(kind);
+	cat.sound = "mew";
+	number = localStorage.length + 1;
+	animal = kind + number;
+	localStorage.setItem(animal, JSON.stringify(cat))
+    break;
+  case "dog":
+  Dog.prototype = Object.create(Animal.prototype);
+	var dog = new Dog(kind);
+	dog.sound = "bark";
+	number = localStorage.length + 1;
+	animal = kind + number;
+	localStorage.setItem(animal, JSON.stringify(dog))
+    break;
+	case "pig":
+	Pig.prototype = Object.create(Animal.prototype);
+	var pig = new Pig(kind);
+	pig.sound = "oink";
+	number = localStorage.length + 1;
+	animal = kind + number;
+	localStorage.setItem(animal, JSON.stringify(pig))
+    break;
+}
+ 
+ displayFarmInhabitants();
+
+
+//document.getElementById("animal_display").innerHTML = myAnimal.showAnimal + " " + myAnimal.kind + " " + myAnimal.sound;
+//document.getElementById("animal_display").innerHTML = myAnimal.kind + myAnimal.sound;
+/*var animals = [];
+animals.push(myAnimal);
+document.getElementById("array_display").innerHTML = animals;*/
+//localStorage.setItem(kind, JSON.stringify(Animal))
+
+
+/*
+switch (purchase) {
+  case "cat":
+	var myAnimal = new Animal();
+    localStorage.setItem(kind, capitalName)
+    break;
+  case "dog":
+    text = "On";
+    break;
+  default:
+    text = "No such animals at this market";
+	document.getElementById("message1").innerHTML = text;
+} 
+*/
+}
+
+function sellAnimal(){
+ var sellAnimal = document.getElementById("kind_remove").value;
+ document.getElementById("message2").innerHTML = "";
+ if(sellAnimal != "dog" && sellAnimal != "cat" && sellAnimal != "pig"){
+document.getElementById("message2").innerHTML = "There are no such animal at the farm";
+}
+ for(let i=0; i<localStorage.length; i++) {
+  let key = localStorage.key(i);
+  object = JSON.parse(localStorage.getItem(key));
+  if(object.kind == sellAnimal){
+  localStorage.removeItem(key);
+  break;
+  }
+}
+  displayFarmInhabitants();
+}
+ 
+</script>
+
+<style>
+textarea{
+	width:800px;
+	height: 250px;
+	background-color: lightyellow;
+	}
+</style>
+</head>
+
+<body>
+	<h1>I have a farm</h1>
+		<section>
+			I want to buy a <input id=kind></input><span id="message1" style="color:red;"></span><br><br>
+			<button onclick="buyAnimal()">Buy</button>
+			I want to sell a :<input id=kind_remove></input><span id="message2" style="color:red;"></span><br><br>
+			<button onclick="sellAnimal()">Sell</button>
+		</section>
+	<div id="farm_display"><script>displayFarmInhabitants(); console.log(localStorage.length)</script></div>
+	<div id="animal_display"></div>
+	<div id="array_display"></div>
+</body>
+</html>
