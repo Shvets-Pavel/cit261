@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+<title>OS</title>
+
+
+<style>
+
+</style>
+</head>
+
+<body>
+<p>Operating systems</p>
+<section id="os">
+
+            </section>
+			Remove OS :<input id=remove_OS></input><span id="message1" style="color:red;"></span><br><br>
+			<button onclick="removeOs()">Remove OS</button>
+			
+			Add OS :
+			Name: <input id=name></input><span id="message1" style="color:red;"></span><br><br>
+			Creator: <input id=creator></input><span id="message1" style="color:red;"></span><br><br>
+			Initial public release: <input id=initialpublicrelease></input><span id="message1" style="color:red;"></span><br><br>
+			Cost, availability: <input id=costavailability></input><span id="message1" style="color:red;"></span><br><br>
+			Target Systemtype: <input id=targetsystemtype></input><span id="message1" style="color:red;"></span><br><br>
+			<button onclick="addOs("name", "creator", )">Add OS</button>
+			
+			<script>
+var section = document.getElementById('os');
+            var requestURL = 'json_files/operating_systems.json';
+            var request = new XMLHttpRequest();
+            request.open('GET', requestURL);
+            request.responseType = 'json';
+            request.send();
+            request.onload = function() {
+                var osData = request.response;
+                console.log(osData);
+                showList(osData);
+            }
+			function showList(jsonObj) {
+                var oss = jsonObj['Operating Systems'];
+				var myList = document.createElement('ul');
+								
+				oss.forEach(function(os){
+				var myLi = document.createElement('li');
+				
+				console.log('!!!!!!!!!!!!!!');
+				console.log(os);
+				var myInnerList = document.createElement('ul');
+				var countDown = 1;
+				for(const property in os) {
+				  var myInnerLi = document.createElement('li');
+				  console.log(property);
+				  console.log(os[property]);
+				  
+				  if(countDown == 1){
+				  myLi.setAttribute("id", os[property]);
+				  }
+				  countDown--;
+				  myInnerLi.textContent = property + " - " + os[property];
+				  myInnerList.appendChild(myInnerLi);
+				  }
+				myLi.appendChild(myInnerList);
+				myList.appendChild(myLi);
+				});				
+				
+				var app = document.querySelector('#os');
+				app.appendChild(myList);
+				
+				}
+				function removeOs(){
+				var remove = document.getElementById("remove_OS").value;
+				  var elmnt = document.getElementById(remove);
+					elmnt.remove();
+				  }
+				  
+				  function addOs(){
+				  var name = document.getElementById("name").value;
+				  var creator = document.getElementById("creator").value;
+				  var initialpublicrelease = document.getElementById("initialpublicrelease").value;
+				  var costavailability = document.getElementById("costavailability").value;
+				  var targetsystemtype = document.getElementById("targetsystemtype").value;
+				  var myInnerList = document.createElement('ul');
+				  var myInnerLi1 = document.createElement('li');
+				  myInnerLi1.textContent = getVariableName(name) + " - " + name;
+				  myInnerList.appendChild(myInnerLi1);
+				  var myInnerLi2 = document.createElement('li');
+				  myInnerLi1.textContent = getVariableName(creator) + " - " + creator;
+				  myInnerList.appendChild(myInnerLi2);
+				  var myInnerLi3 = document.createElement('li');
+				  myInnerLi3.textContent = getVariableName(initialpublicrelease) + " - " + initialpublicrelease;
+				  myInnerList.appendChild(myInnerLi3);
+				  var myInnerLi4 = document.createElement('li');
+				  myInnerLi4.textContent = getVariableName(costavailability) + " - " + costavailability;
+				  myInnerList.appendChild(myInnerLi4);
+				  var myInnerLi5 = document.createElement('li');
+				  myInnerLi5.textContent = getVariableName(targetsystemtype) + " - " + targetsystemtype;
+				  myInnerList.appendChild(myInnerLi5);
+				  
+				  
+				  
+				  var element = document.getElementsByTagName("ul");
+				  var child = document.getElementById("li");
+				  element.insertBefore(myInnerList,child);
+				  
+				  /*
+				  var myLi = document.createElement('li');
+				  myLi.appendChild(myInnerList);
+				  myList.appendChild(myLi);
+				  */
+				  
+				  showList();
+				  }
+				  
+				
+			
+</script>
+</body>
+</html>
