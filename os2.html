@@ -23,9 +23,11 @@
 			Initial public release: <input id=initialpublicrelease></input><span id="message1" style="color:red;"></span><br><br>
 			Cost, availability: <input id=costavailability></input><span id="message1" style="color:red;"></span><br><br>
 			Target Systemtype: <input id=targetsystemtype></input><span id="message1" style="color:red;"></span><br><br>
-			<button onclick="addOs("name", "creator", )">Add OS</button>
+			<button onclick="addOs('name', 'creator', 'initialpublicrelease', 'costavailability', 'targetsystemtype')">Add OS</button>
 			
 			<script>
+			var repeat = 0;
+			var target = " ";
 var section = document.getElementById('os');
             var requestURL = 'json_files/operating_systems.json';
             var request = new XMLHttpRequest();
@@ -37,9 +39,21 @@ var section = document.getElementById('os');
                 console.log(osData);
                 showList(osData);
             }
+			
+			function showNewList(target) {
+			console.log("***************************************************************");
+			console.log(target);
+			var app = document.querySelector('#os');
+				app.appendChild(target);
+			}
+			
 			function showList(jsonObj) {
+			console.log("repeat:");
+			console.log(repeat);
                 var oss = jsonObj['Operating Systems'];
 				var myList = document.createElement('ul');
+				
+				myList.setAttribute('id', 'mainList')
 								
 				oss.forEach(function(os){
 				var myLi = document.createElement('li');
@@ -54,8 +68,9 @@ var section = document.getElementById('os');
 				  console.log(os[property]);
 				  
 				  if(countDown == 1){
-				  myLi.setAttribute("id", os[property]);
+				  myLi.setAttribute('id', os[property]);
 				  }
+				  
 				  countDown--;
 				  myInnerLi.textContent = property + " - " + os[property];
 				  myInnerList.appendChild(myInnerLi);
@@ -66,42 +81,52 @@ var section = document.getElementById('os');
 				
 				var app = document.querySelector('#os');
 				app.appendChild(myList);
-				
+								
 				}
+				
 				function removeOs(){
-				var remove = document.getElementById("remove_OS").value;
+				var remove = document.getElementById('remove_OS').value;
 				  var elmnt = document.getElementById(remove);
 					elmnt.remove();
 				  }
 				  
-				  function addOs(){
+				  function addOs(Name, Creator, Initialpublicrelease, Costavailability, Targetsystemtype){
+				  repeat++;
 				  var name = document.getElementById("name").value;
 				  var creator = document.getElementById("creator").value;
 				  var initialpublicrelease = document.getElementById("initialpublicrelease").value;
 				  var costavailability = document.getElementById("costavailability").value;
 				  var targetsystemtype = document.getElementById("targetsystemtype").value;
+				  
+				  var myLi = document.createElement('li');
+				  myLi.setAttribute('id', name);
 				  var myInnerList = document.createElement('ul');
+				  myLi.appendChild(myInnerList);
+				  
 				  var myInnerLi1 = document.createElement('li');
-				  myInnerLi1.textContent = getVariableName(name) + " - " + name;
+				  
+				  myInnerLi1.textContent = Name + " - " + name;
+				  
 				  myInnerList.appendChild(myInnerLi1);
 				  var myInnerLi2 = document.createElement('li');
-				  myInnerLi1.textContent = getVariableName(creator) + " - " + creator;
+				  myInnerLi2.textContent = Creator + " - " + creator;
 				  myInnerList.appendChild(myInnerLi2);
 				  var myInnerLi3 = document.createElement('li');
-				  myInnerLi3.textContent = getVariableName(initialpublicrelease) + " - " + initialpublicrelease;
+				  myInnerLi3.textContent = Initialpublicrelease + " - " + initialpublicrelease;
 				  myInnerList.appendChild(myInnerLi3);
 				  var myInnerLi4 = document.createElement('li');
-				  myInnerLi4.textContent = getVariableName(costavailability) + " - " + costavailability;
+				  myInnerLi4.textContent = Costavailability + " - " + costavailability;
 				  myInnerList.appendChild(myInnerLi4);
 				  var myInnerLi5 = document.createElement('li');
-				  myInnerLi5.textContent = getVariableName(targetsystemtype) + " - " + targetsystemtype;
+				  myInnerLi5.textContent = Targetsystemtype + " - " + targetsystemtype;
 				  myInnerList.appendChild(myInnerLi5);
 				  
 				  
 				  
-				  var element = document.getElementsByTagName("ul");
-				  var child = document.getElementById("li");
-				  element.insertBefore(myInnerList,child);
+				  
+				  
+				  target = document.getElementById("mainList");
+				  target.insertBefore(myLi,target.childNodes[0]);
 				  
 				  /*
 				  var myLi = document.createElement('li');
@@ -109,7 +134,7 @@ var section = document.getElementById('os');
 				  myList.appendChild(myLi);
 				  */
 				  
-				  showList();
+				  showNewList(target);
 				  }
 				  
 				
