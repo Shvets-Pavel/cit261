@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+<title>Title of Your Page</title>
+
+
+<style>
+
+#trafficLights{
+border: 1px solid black;
+width: 100px;
+height: 200px;
+}
+
+.redActive{
+position: relative;
+top: 15px;
+left: 25px;
+border: 1px solid black;
+width: 50px;
+height: 50px;
+background-color: red;
+border-radius: 50%;
+}
+
+.redInactive{
+position: relative;
+top: 15px;
+left: 25px;
+border: 1px solid black;
+width: 50px;
+height: 50px;
+background-color: white;
+border-radius: 50%;
+}
+
+.yellowActive{
+position: relative;
+top: 25px;
+left: 25px;
+border: 1px solid black;
+width: 50px;
+height: 50px;
+background-color: yellow;
+border-radius: 50%;
+}
+
+.yellowInactive{
+position: relative;
+top: 25px;
+left: 25px;
+border: 1px solid black;
+width: 50px;
+height: 50px;
+background-color: white;
+border-radius: 50%;
+}
+
+.greenActive{
+position: relative;
+top: 35px;
+left: 25px;
+border: 1px solid black;
+width: 50px;
+height: 50px;
+background-color: green;
+border-radius: 50%;
+}
+
+.greenInactive{
+position: relative;
+top: 35px;
+left: 25px;
+border: 1px solid black;
+width: 50px;
+height: 50px;
+background-color: white;
+border-radius: 50%;
+}
+
+button{
+top: 350px;
+}
+
+.firstChange{
+border: 5px solid purple;
+}
+
+.secondChange{
+background-color: gray;
+}
+
+.thirdChange{
+border-radius: 10%;
+}
+</style>
+</head>
+
+<body>
+<div id="trafficLights">
+<div id="red" class="redActive"></div>
+<div id="yellow" class="yellowInactive"></div>
+<div id="green" class="greenInactive"></div>
+</div>
+    </div>
+<button onclick="switchLights()">Switch the lights</button>
+<button onclick="changeTrafficLights()">Change the traffic lights</button>
+
+<script>
+function switchLights() {
+var red = document.getElementById("red");
+var yellow = document.getElementById("yellow");
+var green = document.getElementById("green");
+if(red.className === "redActive" && yellow.className === "yellowInactive" && green.className === "greenInactive"){
+          document.getElementById("red").className = "redInactive";
+		  document.getElementById("yellow").className = "yellowActive";
+      } else if(red.className === "redInactive" && yellow.className === "yellowActive" && green.className === "greenInactive"){
+	  document.getElementById("yellow").className = "yellowInactive";
+	  document.getElementById("green").className = "greenActive";
+	  } else if (red.className === "redInactive" && yellow.className === "yellowInactive" && green.className === "greenActive"){
+	  document.getElementById("red").className = "redActive";
+	  document.getElementById("green").className = "greenInactive";
+	  }
+	  }
+	  
+function changeTrafficLights() {
+  document.getElementById("trafficLights").classList.add("firstChange", "secondChange", "thirdChange");
+}
+</script>
+</body>
+</html>
