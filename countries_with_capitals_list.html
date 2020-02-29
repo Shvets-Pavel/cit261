@@ -3,10 +3,13 @@
 <head>
 <title>List of Countries with Capital Cities</title>
 <script>
-var listOfCountriesWithCapitalCities = [];
+// a function which adds country names and capital city names to the associative array in the localStorage
 function addCapitalCityWithCountry(){
+	// declaring variables
 	 var countryName = document.getElementById("country_input").value
 	 var capitalName = document.getElementById("capital_input").value
+	 
+	 // conditional statements
 	 if (countryName == "" && capitalName == ""){
 	 document.getElementById("message1").innerHTML = "Please, input a country name";
 	 document.getElementById("message2").innerHTML = "Please, input a capital city name";
@@ -21,8 +24,7 @@ function addCapitalCityWithCountry(){
 	 document.getElementById("message1").innerHTML = "";
 	 document.getElementById("message2").innerHTML = "";
 	 localStorage.setItem(countryName, capitalName)
-	 //listOfCountriesWithCapitalCities[countryName] = capitalName;
-	 console.log(listOfCountriesWithCapitalCities);
+	 
 	 document.getElementById("country_input").value = "";
 	 document.getElementById("capital_input").value = "";
 	 successMessage(countryName, capitalName);
@@ -30,113 +32,111 @@ function addCapitalCityWithCountry(){
 	 
 	 
 	 displayList();
-	 
-	 
  }
+ 
+ // a function which displayes the list
  function displayList(){
+ // conditional statements
  if(localStorage.length == 0){
 	document.getElementById("list_display").innerHTML = "<canvas id='emptyListMessage' width='500' height='50'>" + "</canvas>";
-	var canvas = document.getElementById("emptyListMessage");
-var ctx=canvas.getContext("2d");
-ctx.font="30px Comic Sans MS";
-ctx.fillStyle = "red";
-ctx.textAlign = "center";
-ctx.fillText("The list is empty", canvas.width/2, canvas.height/2);
+	var canvasElement = document.getElementById("emptyListMessage");
+var canvasResult=canvasElement.getContext("2d");
+canvasResult.font="30px Comic Sans MS";
+canvasResult.fillStyle = "red";
+canvasResult.textAlign = "center";
+canvasResult.fillText("The list is empty", canvasElement.width/2, canvasElement.height/2);
  } else {
  var capitalCityList = "<table><tbody><tr><th>Countries</th><th>Capital Cities</th></tr></tr>";
+ 
+	// for loop
+	// localStorage stores data as an Associative Array
  for(let i=0; i<localStorage.length; i++) {
   let key = localStorage.key(i);
   capitalCityList += "<tr><td>" + key + "</td><td>" + localStorage.getItem(key) + "</td></tr>";
 }
 capitalCityList += "</tbody></table>";
 	 document.getElementById("list_display").innerHTML = capitalCityList;
-	 }
-	 
-	 document.getElementById('table').innerHTML = "";
-	 var table = document.getElementById('table');
-  var tableBody = document.createElement('tbody');
-  var tableRow = document.createElement('tr');
-  var tableData = document.createElement('td');
-  var tableData2 = document.createElement('td2');
-  var text = document.createTextNode("Countries");
-  tableData.appendChild(text);
-  var text2 = document.createTextNode("Capital Cities");
-  tableData2.appendChild(text2);
-        tableRow.appendChild(tableData);
-        tableRow.appendChild(tableData2);
-      tableBody.appendChild(tableRow);
-      table.appendChild(tableBody);
-	  for(let i=0; i<localStorage.length; i++) {
-  let key = localStorage.key(i);
-  var tableRow = document.createElement('tr');
-  var tableData = document.createElement('td');
-  var tableData2 = document.createElement('td2');
-  var text = document.createTextNode(key);
-  tableData.appendChild(text);
-  var text2 = document.createTextNode(localStorage.getItem(key));
-  tableData2.appendChild(text2);
-        tableRow.appendChild(tableData);
-        tableRow.appendChild(tableData2);
-      tableBody.appendChild(tableRow);
-}
-	  
+	 document.getElementById('table').innerHTML = "";	 
+	}	  
  }
+ 
+ // a function which deletes values from the list
  function deleteItem(){
+ 
+ // declaring variables
  var countryName = document.getElementById("country_remove").value;
  var key1 = "something1";
  var foundItem = false;
+ 
+	// for loop
+	// localStorage stores data as an Associative Array
  for(let i=0; i<localStorage.length; i++) {
 	key1 = localStorage.key(i);
+	// a conditional statement
 	if(key1 == countryName){
   foundItem = true;
   }
+  
+  document.getElementById("message1").innerHTML = "";
+	 document.getElementById("message2").innerHTML = "";
+  
 }
- //var key1 = localStorage.getItem(countryName);
+ 
  localStorage.removeItem(countryName);
  displayList();
  
+ // declaring variables
  var key2 = "something2";
  var length = localStorage.length;
  var removed = false;
  
+ // a conditional statement
  if(localStorage.length == 0){
  removed = true;
  }
  
+	// for loop
+	// localStorage stores data as an Associative Array
  for(let i=0; i<localStorage.length; i++) {
 	key2 = localStorage.key(i);
+	// a conditional statement
 	if(key2 != countryName && foundItem == true){
   removed = true;
   }
 }
   
+  // conditional statements
 if(removed){
 document.getElementById("country_remove").value = "";
- var canvas = document.getElementById("newCapitalCity");
-var ctx=canvas.getContext("2d");
-ctx.clearRect(0, 0, canvas.width, canvas.height);
+// declaring variables
+ var canvasElement = document.getElementById("newCapitalCity");
+var canvasResult=canvasElement.getContext("2d");
+canvasResult.clearRect(0, 0, canvasElement.width, canvasElement.height);
 var newListItem = "Congratulations! You have successfully deleted the capital city of " + countryName;
-ctx.font="20px Comic Sans MS";
-ctx.fillStyle = "blue";
-ctx.textAlign = "center";
-ctx.fillText(newListItem, canvas.width/2, canvas.height/2);
+canvasResult.font="20px Comic Sans MS";
+canvasResult.fillStyle = "blue";
+canvasResult.textAlign = "center";
+canvasResult.fillText(newListItem, canvasElement.width/2, canvasElement.height/2);
 document.getElementById("message3").innerHTML = "";
 } else {
 document.getElementById("message3").innerHTML = "Sorry, this country has not been found in the list. Please, check the spelling and try again";
-var canvas = document.getElementById("newCapitalCity");
-var ctx=canvas.getContext("2d");
-ctx.clearRect(0, 0, canvas.width, canvas.height);
+var canvasElement = document.getElementById("newCapitalCity");
+var canvasResult=canvasElement.getContext("2d");
+canvasResult.clearRect(0, 0, canvasElement.width, canvasElement.height);
 }
  }
+ 
+ // a function with parameters which outputs the success message
  function successMessage(countryName, capitalName){
- var canvas = document.getElementById("newCapitalCity");
-var ctx=canvas.getContext("2d");
-ctx.clearRect(0, 0, canvas.width, canvas.height);
+ // declaring variables
+ var canvasElement = document.getElementById("newCapitalCity");
+var canvasResult=canvasElement.getContext("2d");
+canvasResult.clearRect(0, 0, canvasElement.width, canvasElement.height);
 var newListItem = "Congratulations! You have successfully added " + capitalName + " which is a capital city of " + countryName;
-ctx.font="20px Comic Sans MS";
-ctx.fillStyle = "blue";
-ctx.textAlign = "center";
-ctx.fillText(newListItem, canvas.width/2, canvas.height/2);
+canvasResult.font="20px Comic Sans MS";
+canvasResult.fillStyle = "blue";
+canvasResult.textAlign = "center";
+canvasResult.fillText(newListItem, canvasElement.width/2, canvasElement.height/2);
  }
 </script>
 
@@ -157,11 +157,9 @@ flex-direction:row;
 		<button onclick="addCapitalCityWithCountry()">Add Capital City with Country to the list</button><br><br>
 		Remove item:<input id=country_remove placeholder="Input the country name"></input><span id="message3" style="color:red;"></span><br><br>
 		<section>		
-			<!--<button onclick="displayList()">Display the List</button>-->
-			<button onclick="deleteItem()">Delete List Item</button><br><br>
-			<button onclick="displayList()">Display List</button><br><br>
+			<button onclick="deleteItem()">Delete List Item</button><br><br>			
 		</section>
-	<div id="list_display"><script>displayList()</script><!--<canvas id="emptyListMessage" width="500" height="50"></canvas>--></div>
+	<div id="list_display"><script>displayList()</script></div>
 	<br>
 	<br>
 	<table id="table">
@@ -183,8 +181,7 @@ Your browser does not support the video tag.
 	<br>
 	<h1>Audio</h1>
 <audio controls>
-  <source src="horse.ogg" type="audio/ogg">
-  <source src="horse.mp3" type="audio/mpeg">
+  <source src="2002-01-0010-i-am-a-child-of-god-music-only-192k-eng.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 </body>
