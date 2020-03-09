@@ -1,0 +1,34 @@
+{
+
+    "Operating System": [
+        {
+            "Name": "Android",
+            "Creator": "Android, Inc, Google",
+            "Initial public release": "2008",
+            "Cost, availability": "Free",
+            "Target system type": "Smartphone, tablet computer, education"
+        },
+        {
+            "Name": "GNU/Linux",
+            "Creator": "Richard Stallman and Linus Torvalds",
+            "Initial public release": "1991",
+            "Cost, availability": "Free",
+            "Target system type": "Various"
+        },
+        {
+            "Name": "iOS",
+            "Creator": "Apple Inc.",
+            "Initial public release": "2007",
+            "Cost, availability": "Bundled with hardware and free updates given to most existing users",
+            "Target system type": "Smartphone, music player, tablet computer"
+        },
+		{
+            "Name": "Windows (NT family)",
+            "Creator": "Microsoft",
+            "Initial public release": "1993",
+            "Cost, availability": "US$199",
+            "Target system type": "Workstation, personsl computer, media center, Tablet PC, embedded"
+        }
+    ]
+
+}

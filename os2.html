@@ -10,26 +10,28 @@
 </head>
 
 <body>
-<p>Operating systems</p>
+<p>A list of Operating systems</p>
 <section id="os">
 
             </section>
-			Remove OS :<input id=remove_OS></input><span id="message1" style="color:red;"></span><br><br>
-			<button onclick="removeOs()">Remove OS</button>
+			Remove OS (you can specify either an OS name or an item number in the list. If you choose to specify an OS name then you have to spell the name exactly like in the list) :<br><input id=remove_OS></input><span id="message" style="color:red;"></span><br><br>
+			<button onclick="removeOs()">Remove OS</button><br><br>
 			
-			Add OS :
+			Add OS : <br>
 			Name: <input id=name></input><span id="message1" style="color:red;"></span><br><br>
-			Creator: <input id=creator></input><span id="message1" style="color:red;"></span><br><br>
-			Initial public release: <input id=initialpublicrelease></input><span id="message1" style="color:red;"></span><br><br>
-			Cost, availability: <input id=costavailability></input><span id="message1" style="color:red;"></span><br><br>
-			Target Systemtype: <input id=targetsystemtype></input><span id="message1" style="color:red;"></span><br><br>
+			Creator: <input id=creator></input><span id="message2" style="color:red;"></span><br><br>
+			Initial public release: <input id=initialpublicrelease></input><span id="message3" style="color:red;"></span><br><br>
+			Cost, availability: <input id=costavailability></input><span id="message4" style="color:red;"></span><br><br>
+			Target Systemtype: <input id=targetsystemtype></input><span id="message5" style="color:red;"></span><br><br>
 			<button onclick="addOs('name', 'creator', 'initialpublicrelease', 'costavailability', 'targetsystemtype')">Add OS</button>
 			
 			<script>
 			var repeat = 0;
-			var target = " ";
+			var app = "";
+			var osList = " ";
 var section = document.getElementById('os');
             var requestURL = 'json_files/operating_systems.json';
+			// AJAX requesting a JSON file
             var request = new XMLHttpRequest();
             request.open('GET', requestURL);
             request.responseType = 'json';
@@ -41,8 +43,6 @@ var section = document.getElementById('os');
             }
 			
 			function showNewList(target) {
-			console.log("***************************************************************");
-			console.log(target);
 			var app = document.querySelector('#os');
 				app.appendChild(target);
 			}
@@ -51,82 +51,130 @@ var section = document.getElementById('os');
 			console.log("repeat:");
 			console.log(repeat);
                 var oss = jsonObj['Operating Systems'];
-				var myList = document.createElement('ul');
+				var myList = document.createElement('ul'); // creating an unordered list element
 				
-				myList.setAttribute('id', 'mainList')
+				myList.setAttribute('id', 'mainList'); // setting an attribute for the unordered list
 								
 				oss.forEach(function(os){
-				var myLi = document.createElement('li');
+				var myLi = document.createElement('li'); // creating a list item element of the unordered list
 				
 				console.log('!!!!!!!!!!!!!!');
 				console.log(os);
-				var myInnerList = document.createElement('ul');
+				var myInnerList = document.createElement('ul'); // creating another  inner unordered list element
 				var countDown = 1;
 				for(const property in os) {
-				  var myInnerLi = document.createElement('li');
+				  var myInnerLi = document.createElement('li'); // creating a list item element of the inner unordered list
 				  console.log(property);
 				  console.log(os[property]);
 				  
 				  if(countDown == 1){
-				  myLi.setAttribute('id', os[property]);
+				  myLi.setAttribute('id', os[property]); // setting an attribute for a list item element of the unordered list
 				  }
 				  
 				  countDown--;
 				  myInnerLi.textContent = property + " - " + os[property];
-				  myInnerList.appendChild(myInnerLi);
+				  myInnerList.appendChild(myInnerLi); // appending an inner list item to the inner list 
 				  }
-				myLi.appendChild(myInnerList);
-				myList.appendChild(myLi);
+				myLi.appendChild(myInnerList); // appending the inner list to an outer list item
+				myList.appendChild(myLi); // appending an outer list item to the outer list 
 				});				
 				
-				var app = document.querySelector('#os');
-				app.appendChild(myList);
+				app = document.querySelector('#os');
+				app.appendChild(myList); // appending the outer list to the app element 
+				
 								
 				}
 				
+				// this function removes an OS
 				function removeOs(){
 				var remove = document.getElementById('remove_OS').value;
-				  var elmnt = document.getElementById(remove);
-					elmnt.remove();
+				var number = parseInt(remove, 10) - 1;
+				osList = document.getElementById("mainList");
+				if(number<osList.childNodes.length){
+				osList.removeChild(osList.childNodes[number]);	// removing a child element with removeChild()
+					document.getElementById("message").innerHTML = " ";				
+				} else {
+				  var element = document.getElementById(remove);
+				  if(element){
+					element.remove();
+					document.getElementById("message").innerHTML = " ";
+					} else {
+					document.getElementById("message").innerHTML = "There is no such item in the list";
+					}
+					}
 				  }
 				  
+				  // this function adds an OS
 				  function addOs(Name, Creator, Initialpublicrelease, Costavailability, Targetsystemtype){
 				  repeat++;
+				  // declaring variables
 				  var name = document.getElementById("name").value;
 				  var creator = document.getElementById("creator").value;
 				  var initialpublicrelease = document.getElementById("initialpublicrelease").value;
 				  var costavailability = document.getElementById("costavailability").value;
 				  var targetsystemtype = document.getElementById("targetsystemtype").value;
+				  if(name == "" || creator == "" || initialpublicrelease == "" || costavailability == "" || targetsystemtype == ""){
+				  if(name == ""){
+				  document.getElementById("message1").innerHTML = "Please, specify the OS name";
+				  } else {
+				   document.getElementById("message1").innerHTML = "";
+				  }
+				  if (creator == ""){
+				  document.getElementById("message2").innerHTML = "Please, specify the creator name";
+				  } else {
+					document.getElementById("message2").innerHTML = " ";
+				  }
+				  if (initialpublicrelease == ""){
+				  document.getElementById("message3").innerHTML = "Please, specify the initial public release year";
+				  } else {
+					document.getElementById("message3").innerHTML = " ";
+				  }
+				  if (costavailability == ""){
+				  document.getElementById("message4").innerHTML = "Please, specify the cost availability";
+				  } else {
+					document.getElementById("message4").innerHTML = "";
+				  }
+				  if (targetsystemtype == ""){
+					document.getElementById("message5").innerHTML = "Please, specify the target system type";
+				  } else {
+					document.getElementById("message5").innerHTML = "";
+				  }
+				  } else {
+				  document.getElementById("message1").innerHTML = "";
+				  document.getElementById("message2").innerHTML = "";
+				  document.getElementById("message3").innerHTML = "";
+				  document.getElementById("message4").innerHTML = "";
+				  document.getElementById("message5").innerHTML = "";
 				  
-				  var myLi = document.createElement('li');
-				  myLi.setAttribute('id', name);
-				  var myInnerList = document.createElement('ul');
-				  myLi.appendChild(myInnerList);
+				  var myLi = document.createElement('li'); // creating a list item element
+				  myLi.setAttribute('id', name); // setting an attribute for a list item element of the unordered list
+				  var myInnerList = document.createElement('ul'); // creating another inner unordered list element
+				  myLi.appendChild(myInnerList); // appending the inner list to an outer list item
 				  
-				  var myInnerLi1 = document.createElement('li');
+				  var myInnerLi1 = document.createElement('li'); // creating a list item element of the inner unordered list
 				  
-				  myInnerLi1.textContent = Name + " - " + name;
+				  myInnerLi1.textContent = Name + " - " + name; // creating the element node
 				  
-				  myInnerList.appendChild(myInnerLi1);
-				  var myInnerLi2 = document.createElement('li');
-				  myInnerLi2.textContent = Creator + " - " + creator;
-				  myInnerList.appendChild(myInnerLi2);
-				  var myInnerLi3 = document.createElement('li');
-				  myInnerLi3.textContent = Initialpublicrelease + " - " + initialpublicrelease;
-				  myInnerList.appendChild(myInnerLi3);
-				  var myInnerLi4 = document.createElement('li');
-				  myInnerLi4.textContent = Costavailability + " - " + costavailability;
-				  myInnerList.appendChild(myInnerLi4);
-				  var myInnerLi5 = document.createElement('li');
-				  myInnerLi5.textContent = Targetsystemtype + " - " + targetsystemtype;
-				  myInnerList.appendChild(myInnerLi5);
-				  
-				  
+				  myInnerList.appendChild(myInnerLi1); // appending an inner list item to the inner list 
+				  var myInnerLi2 = document.createElement('li'); // creating a list item element of the inner unordered list
+				  myInnerLi2.textContent = Creator + " - " + creator; // creating the element node
+				  myInnerList.appendChild(myInnerLi2); // appending an inner list item to the inner list 
+				  var myInnerLi3 = document.createElement('li'); // creating a list item element of the inner unordered list
+				  myInnerLi3.textContent = Initialpublicrelease + " - " + initialpublicrelease; // creating the element node
+				  myInnerList.appendChild(myInnerLi3); // appending an inner list item to the inner list 
+				  var myInnerLi4 = document.createElement('li'); // creating a list item element of the inner unordered list
+				  myInnerLi4.textContent = Costavailability + " - " + costavailability; // creating the element node
+				  myInnerList.appendChild(myInnerLi4); // appending an inner list item to the inner list 
+				  var myInnerLi5 = document.createElement('li'); // creating a list item element of the inner unordered list
+				  myInnerLi5.textContent = Targetsystemtype + " - " + targetsystemtype; // creating the element node
+				  myInnerList.appendChild(myInnerLi5); // appending an inner list item to the inner list 
 				  
 				  
 				  
-				  target = document.getElementById("mainList");
-				  target.insertBefore(myLi,target.childNodes[0]);
+				  
+				  
+				  osList = document.getElementById("mainList");
+				  osList.insertBefore(myLi,osList.childNodes[0]); // inserting the node as a child right before the first item of the list
 				  
 				  /*
 				  var myLi = document.createElement('li');
@@ -134,7 +182,10 @@ var section = document.getElementById('os');
 				  myList.appendChild(myLi);
 				  */
 				  
-				  showNewList(target);
+				  showNewList(osList);
+				  
+					}
+				  
 				  }
 				  
 				

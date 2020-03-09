@@ -107,6 +107,7 @@ border-radius: 10%;
 <button onclick="changeTrafficLights()">Change the traffic lights</button>
 
 <script>
+var changed = false;
 function switchLights() {
 var red = document.getElementById("red");
 var yellow = document.getElementById("yellow");
@@ -124,7 +125,13 @@ if(red.className === "redActive" && yellow.className === "yellowInactive" && gre
 	  }
 	  
 function changeTrafficLights() {
+if(!changed){
   document.getElementById("trafficLights").classList.add("firstChange", "secondChange", "thirdChange");
+  changed = true;
+  } else {
+	document.getElementById("trafficLights").classList.remove("firstChange", "secondChange", "thirdChange");
+	changed = false;
+  }
 }
 </script>
 </body>

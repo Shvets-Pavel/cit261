@@ -2,27 +2,82 @@
 <html>
 <head>
 <title>Farm</title>
-<script>
 
+
+<style>
+textarea{
+	width:800px;
+	height: 250px;
+	background-color: lightyellow;
+	}
+</style>
+</head>
+
+<body>
+	<h1>I have a farm</h1>
+	<span>Now at the market you can buy: </span><span id="animals"></span>
+	<br>
+	<br>
+		<section>
+			I want to buy a <input id=kind></input><span id="message1" style="color:red;"></span><br><br>
+			<button onclick="buyAnimal()">Buy</button>
+			I want to sell a :<input id=kind_remove></input><span id="message2" style="color:red;"></span><br><br>
+			<button onclick="sellAnimal()">Sell</button>
+		</section>
+		<div id="message_display"></div>
+	<div id="farm_display"></div>
+	<div id="animal_display"></div>
+	<div id="array_display"></div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<h1>Audio</h1>
+<audio controls>
+  <source src="2002-01-0010-i-am-a-child-of-god-music-only-192k-eng.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+
+<script>
+var animalsAvailableAtTheMarket = ["dogs", " cats", " pigs"];
+ document.getElementById("animals").innerHTML = animalsAvailableAtTheMarket;
  
+
+
+displayFarmInhabitants();
+
+ // a function which displays animals from the farm
  function displayFarmInhabitants(){
  if(localStorage.length == 0){
-	document.getElementById("farm_display").innerHTML = "<canvas id='emptyListMessage' width='500' height='50'>" + "</canvas>";
-	var canvas = document.getElementById("emptyListMessage");
-var ctx=canvas.getContext("2d");
-ctx.font="30px Comic Sans MS";
-ctx.fillStyle = "red";
-ctx.textAlign = "center";
-ctx.fillText("Now the farm is empty", canvas.width/2, canvas.height/2);
+	document.getElementById("message_display").innerHTML = "<canvas id='emptyListMessage' width='500' height='50'>" + "</canvas>";
+	// declaring variables
+	var canvasElement = document.getElementById("emptyListMessage");
+var canvasResult=canvasElement.getContext("2d");
+canvasResult.font="30px Comic Sans MS";
+canvasResult.fillStyle = "red";
+canvasResult.textAlign = "center";
+canvasResult.fillText("Now the farm is empty", canvasElement.width/2, canvasElement.height/2);
+document.getElementById("farm_display").innerHTML = "";
+
  } else {
+ document.getElementById("message_display").innerHTML = "<canvas id='emptyListMessage' width='500' height='50'>" + "</canvas>";
+ // declaring variables
+	var canvasElement = document.getElementById("emptyListMessage");
+var canvasResult=canvasElement.getContext("2d");
+canvasResult.font="30px Comic Sans MS";
+canvasResult.fillStyle = "green";
+canvasResult.textAlign = "center";
+canvasResult.fillText("Now at the farm I have:", canvasElement.width/2, canvasElement.height/2);
+// declaring variables
  var farmInhabitants = "";
  var object;
  for(let i=0; i<localStorage.length; i++) {
   let key = localStorage.key(i);
-  object = JSON.parse(localStorage.getItem(key));
+  object = JSON.parse(localStorage.getItem(key));  // JSON parse method
   console.log(object); 
+  // adding a method to the object
   object.showAnimal = function() {
-  return "Here is " + this.kind + " which makes the sound " + this.sound;
+  return "A " + this.kind + " which makes the sound " + this.sound;
 };
   //farmInhabitants += getObject.kind + " " + getObject.sound + "<br><br>";
   farmInhabitants += object.showAnimal() + "<br><br>";
@@ -31,9 +86,14 @@ ctx.fillText("Now the farm is empty", canvas.width/2, canvas.height/2);
 	 }
 }
  
+ // a function which adds animal objects to the associative array in the localStorage
 function buyAnimal(){
 
-var kind = document.getElementById("kind").value
+document.getElementById("message2").innerHTML = " ";
+
+// declaring a variable
+var kind = document.getElementById("kind").value;
+
 
 document.getElementById("message1").innerHTML = "";
 if(kind != "dog" && kind != "cat" && kind != "pig"){
@@ -41,9 +101,9 @@ document.getElementById("message1").innerHTML = "There are no such animal at the
 }
 
 function Animal(kind){
-	this.kind = kind;	
+
+	this.kind = kind;	// identifying a property of the Animal object
  }
- 
  
  
  function Dog(kind) {
@@ -62,61 +122,40 @@ function Pig(kind) {
  
  switch (kind) {
   case "cat":
-  Cat.prototype = Object.create(Animal.prototype);
-	var cat = new Cat(kind);
-	cat.sound = "mew";
+  Cat.prototype = Object.create(Animal.prototype); // creating a Cat prototype of the Animal object with Object.create() method which inherits from Animal object
+	var cat = new Cat(kind); // instantiating the Animal object with the new keyword
+	// a property of the Animal object
+	cat.sound = "mew"; // identifying a property of the Cat object
 	number = localStorage.length + 1;
 	animal = kind + number;
-	localStorage.setItem(animal, JSON.stringify(cat))
+	localStorage.setItem(animal, JSON.stringify(cat)) // JSON stringify method
     break;
   case "dog":
-  Dog.prototype = Object.create(Animal.prototype);
-	var dog = new Dog(kind);
-	dog.sound = "bark";
+  Dog.prototype = Object.create(Animal.prototype); // creating a Dog prototype of the Animal object with Object.create() method which inherits from Animal object
+	var dog = new Dog(kind); // instantiating the Animal object with the new keyword
+	dog.sound = "bark"; // identifying a property of the Dog object
 	number = localStorage.length + 1;
 	animal = kind + number;
-	localStorage.setItem(animal, JSON.stringify(dog))
+	localStorage.setItem(animal, JSON.stringify(dog)) // JSON stringify method
     break;
 	case "pig":
-	Pig.prototype = Object.create(Animal.prototype);
-	var pig = new Pig(kind);
-	pig.sound = "oink";
+	Pig.prototype = Object.create(Animal.prototype); // creating a Pig prototype of the Animal object with Object.create() method which inherits from Animal object
+	var pig = new Pig(kind); // instantiating the Animal object with the new keyword
+	pig.sound = "oink"; // identifying a property of the Pig object
 	number = localStorage.length + 1;
 	animal = kind + number;
-	localStorage.setItem(animal, JSON.stringify(pig))
+	localStorage.setItem(animal, JSON.stringify(pig)) // JSON stringify method
     break;
 }
  
  displayFarmInhabitants();
 
-
-//document.getElementById("animal_display").innerHTML = myAnimal.showAnimal + " " + myAnimal.kind + " " + myAnimal.sound;
-//document.getElementById("animal_display").innerHTML = myAnimal.kind + myAnimal.sound;
-/*var animals = [];
-animals.push(myAnimal);
-document.getElementById("array_display").innerHTML = animals;*/
-//localStorage.setItem(kind, JSON.stringify(Animal))
-
-
-/*
-switch (purchase) {
-  case "cat":
-	var myAnimal = new Animal();
-    localStorage.setItem(kind, capitalName)
-    break;
-  case "dog":
-    text = "On";
-    break;
-  default:
-    text = "No such animals at this market";
-	document.getElementById("message1").innerHTML = text;
-} 
-*/
 }
 
 function sellAnimal(){
  var sellAnimal = document.getElementById("kind_remove").value;
  document.getElementById("message2").innerHTML = "";
+  
  if(sellAnimal != "dog" && sellAnimal != "cat" && sellAnimal != "pig"){
 document.getElementById("message2").innerHTML = "There are no such animal at the farm";
 }
@@ -125,42 +164,15 @@ document.getElementById("message2").innerHTML = "There are no such animal at the
   object = JSON.parse(localStorage.getItem(key));
   if(object.kind == sellAnimal){
   localStorage.removeItem(key);
+  document.getElementById("message2").innerHTML = " ";
   break;
+  } else {
+  document.getElementById("message2").innerHTML = "There are no such animal at the farm";
   }
 }
   displayFarmInhabitants();
 }
  
 </script>
-
-<style>
-textarea{
-	width:800px;
-	height: 250px;
-	background-color: lightyellow;
-	}
-</style>
-</head>
-
-<body>
-	<h1>I have a farm</h1>
-		<section>
-			I want to buy a <input id=kind></input><span id="message1" style="color:red;"></span><br><br>
-			<button onclick="buyAnimal()">Buy</button>
-			I want to sell a :<input id=kind_remove></input><span id="message2" style="color:red;"></span><br><br>
-			<button onclick="sellAnimal()">Sell</button>
-		</section>
-	<div id="farm_display"><script>displayFarmInhabitants(); console.log(localStorage.length)</script></div>
-	<div id="animal_display"></div>
-	<div id="array_display"></div>
-	<br>
-	<br>
-	<br>
-	<br>
-	<h1>Audio</h1>
-<audio controls>
-  <source src="2002-01-0010-i-am-a-child-of-god-music-only-192k-eng.mp3" type="audio/mpeg">
-Your browser does not support the audio element.
-</audio>
 </body>
 </html>
